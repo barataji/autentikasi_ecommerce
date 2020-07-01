@@ -43,4 +43,8 @@ class NetworkUrl {
   static String daftar() {
     return "$url/daftar.php";
   }
+
+  static String checkout() {
+    return "$url/checkout.php";
+  }
 }

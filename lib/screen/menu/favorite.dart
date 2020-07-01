@@ -220,12 +220,13 @@ class _FavoriteState extends State<Favorite> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                "You don't have product favorite yet",
+                                "You don't have favorit product",
                                 textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w300),
                               )
                             ],
-                          ),
-                        ),
+                          )),
             ],
           ),
         ));

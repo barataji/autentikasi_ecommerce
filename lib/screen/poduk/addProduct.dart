@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
+import 'chooseCategory.dart';
 
 class AddProduct extends StatefulWidget {
   @override

@@ -5,6 +5,7 @@ import 'package:frontend_commerce/model/productModel.dart';
 import 'package:frontend_commerce/network/network.dart';
 import 'package:frontend_commerce/screen/poduk/addProduct.dart';
 import 'package:frontend_commerce/screen/poduk/productCart.dart';
+
 import 'package:frontend_commerce/screen/poduk/productDetail.dart';
 import 'package:frontend_commerce/screen/poduk/searchProduct.dart';
 import 'package:http/http.dart' as http;
@@ -158,8 +159,10 @@ class _HomeState extends State<Home> {
             ),
             IconButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ProductCart()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ProductCart(getTotalCart)));
               },
               //Total Cart
               icon: Stack(children: <Widget>[

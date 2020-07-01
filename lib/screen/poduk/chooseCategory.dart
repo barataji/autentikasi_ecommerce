@@ -44,41 +44,43 @@ class _ChooseCategoryProductState extends State<ChooseCategoryProduct> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.deepOrange,
-          title: Text("Choose Category Product"),
-          elevation: 1,
-        ),
-        body: Container(
-            padding: EdgeInsets.all(10),
-            child: loading
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : ListView.builder(
-                    itemCount: listCategory.length,
-                    itemBuilder: (context, i) {
-                      final a = listCategory[i];
-                      return InkWell(
-                          onTap: () {
-                            Navigator.pop(context, a);
-                          },
-                          child: Container(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: <Widget>[
-                                Text(a.categoryName),
-                                Container(
-                                    padding: EdgeInsets.symmetric(
-                                      vertical: 6,
-                                    ),
-                                    child: Divider(
-                                      color: Colors.grey,
-                                    )),
-                              ],
-                            ),
-                          ));
-                    },
-                  )));
+      appBar: AppBar(
+        backgroundColor: Colors.deepOrange,
+        title: Text("Choose Category Product"),
+        elevation: 1,
+      ),
+      body: Container(
+          padding: EdgeInsets.all(10),
+          child: loading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : ListView.builder(
+                  itemCount: listCategory.length,
+                  itemBuilder: (context, i) {
+                    final a = listCategory[i];
+                    return InkWell(
+                      onTap: () {
+                        Navigator.pop(context, a);
+                      },
+                      child: Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            Text(a.categoryName),
+                            Container(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 6,
+                                ),
+                                child: Divider(
+                                  color: Colors.grey,
+                                )),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                )),
+    );
   }
 }

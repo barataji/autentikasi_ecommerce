@@ -7,12 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:frontend_commerce/custom/prefProfile.dart';
 import 'package:frontend_commerce/model/productCartModel.dart';
 import 'package:frontend_commerce/network/network.dart';
+import 'package:frontend_commerce/repository/checkoutRepository.dart';
 import 'package:frontend_commerce/screen/login.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductCart extends StatefulWidget {
+  final VoidCallback method;
+  ProductCart(this.method);
   @override
   _ProductCartState createState() => _ProductCartState();
 }
@@ -22,13 +25,16 @@ class _ProductCartState extends State<ProductCart> {
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   final price = NumberFormat("#,##0", 'en_US');
   bool login = false;
+  String idUsers;
   getDeviceInfo() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
+
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
     print("Device Info :${androidInfo.id}");
     setState(() {
       unikID = androidInfo.id;
       login = pref.getBool(Pref.login) ?? false;
+      idUsers = pref.getString(Pref.id);
     });
     _fetchData();
   }
@@ -94,36 +100,18 @@ class _ProductCartState extends State<ProductCart> {
       "tipe": tipe,
     });
     setState(() {
+      widget.method();
       _fetchData();
     });
   }
 
+  CheckoutRepository checkoutRepository = CheckoutRepository();
   loginTrue() async {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return Platform.isAndroid
-              ? AlertDialog(
-                  title: Text("Information"),
-                  content: Text("Succesfully CheckOut"),
-                  actions: <Widget>[
-                    FlatButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text("Ok"),
-                    )
-                  ],
-                )
-              : CupertinoAlertDialog(
-                  title: Text("Information"),
-                  content: Text("Succesfully CheckOut"),
-                  actions: <Widget>[
-                    FlatButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text("Ok"),
-                    )
-                  ],
-                );
-        });
+    await checkoutRepository.checkout(idUsers, unikID, () {
+      setState(() {
+        widget.method();
+      });
+    }, context);
   }
 
   loginFalse() async {
@@ -217,8 +205,8 @@ class _ProductCartState extends State<ProductCart> {
                                     Text(
                                       "Total Price : Rp. ${price.format(int.parse(totalPrice))}",
                                       style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w300,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     SizedBox(
@@ -257,7 +245,7 @@ class _ProductCartState extends State<ProductCart> {
                           "You don't have product on cart",
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
+                              fontSize: 18, fontWeight: FontWeight.w300),
                         )
                       ],
                     )),

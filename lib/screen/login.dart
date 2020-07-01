@@ -4,12 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend_commerce/custom/prefProfile.dart';
-import 'package:frontend_commerce/network/network.dart';
-import 'package:frontend_commerce/screen/menu.dart';
 import 'package:frontend_commerce/screen/registrasi.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../network/network.dart';
+import 'menu.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -23,7 +24,7 @@ class _LoginState extends State<Login> {
     setState(() {
       namaLengkap = pref.getString(Pref.namaLengkap);
       id = pref.getString(Pref.id);
-      id != null ? sessionLogin() : sessionLogut();
+      id != null ? sessionLogin() : sessiongLogout();
     });
   }
 
@@ -32,7 +33,7 @@ class _LoginState extends State<Login> {
         context, MaterialPageRoute(builder: (context) => Menu()));
   }
 
-  sessionLogut() {}
+  sessiongLogout() {}
 
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -65,7 +66,6 @@ class _LoginState extends State<Login> {
       "token": fcmToken,
     });
     final data = jsonDecode(response.body);
-
     int value = data['value'];
     String message = data['message'];
     String id = data['id'];
@@ -99,10 +99,10 @@ class _LoginState extends State<Login> {
     setState(() {
       pref.setString(Pref.id, id);
       pref.setString(Pref.email, email);
-      pref.setString(Pref.phone, phone);
       pref.setString(Pref.namaLengkap, namaLengkap);
       pref.setString(Pref.createdDate, createdDate);
       pref.setString(Pref.level, level);
+      pref.setString(Pref.phone, phone);
       pref.setBool(Pref.login, true);
     });
   }
@@ -117,32 +117,32 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        //agar pemberitahuan terlihat tidak menutupi logo baterai / sinyal dihp
-        child: Scaffold(
-      body: Center(
-        child: InkWell(
-          onTap: handleGoogleSign,
-          child: Container(
-            padding: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: [
-                    Colors.red,
-                    Colors.deepPurple,
-                  ],
-                )),
-            child: Text(
-              "Google Sign In",
-              style: TextStyle(
-                color: Colors.white,
+      child: Scaffold(
+        body: Center(
+          child: InkWell(
+            onTap: handleGoogleSign,
+            child: Container(
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [
+                      Colors.red,
+                      Colors.purple[200],
+                    ],
+                  )),
+              child: Text(
+                "Google Sign In",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
         ),
       ),
-    ));
+    );
   }
 }
